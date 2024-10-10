@@ -1,4 +1,3 @@
 from os import system
-from sys import argv
 
-system(f"ping {argv[1]}")
+system(f"ping 8.8.8.8")
