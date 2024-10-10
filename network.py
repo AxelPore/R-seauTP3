@@ -9,9 +9,9 @@ def lookup(domn):
     reg = r"^(?=.{4,255}$)([a-zA-Z0-9][a-zA-Z0-9-]{,61}[a-zA-Z0-9]\.)+[a-zA-Z0-9]{2,5}$"
 
     if search(reg, domn):
-        print(gethostbyname(domn))
+        return gethostbyname(domn)
     else :
-        print(f"{domn} is not a valid domain name")
+        return f"{domn} is not a valid domain name"
         
 def ping(ipa):
     ip = f"{ipa}"
@@ -20,12 +20,12 @@ def ping(ipa):
         response = system(f"ping {ipa} > $null")
 
         if response == 0 :
-            print(f"UP!")
+            return f"UP!"
         
         else :
-            print(f"DOWN!")
+            return "DOWN!"
     except ValueError:
-        print(ip, "is not a correct IPv4 address")
+        return f"{ip} is not a correct IPv4 address"
         
 def ip():
     cidr = 0
@@ -39,17 +39,20 @@ def ip():
                 for j in x :
                     if j == "1" :
                         cidr += 1
-    print(addr + "/" + str(cidr))
-    print(2**(32-cidr))        
+    nbra = 2**(32-cidr)
+    return f"{addr}/{cidr} \n{nbra}"
+        
     
 def main(): 
+    p = None
     match argv[1]:
         case "lookup":
-            lookup(argv[2])
+            p = lookup(argv[2])
         case "ping" :
-            ping(argv[2])
+            p = ping(argv[2])
         case "ip":
-            ip()
+            p = ip()
         case _ :
-            print(f"{argv[1]} is not an available command.")
+            p = f"{argv[1]} is not an available command."
+    print(p)
 main()
