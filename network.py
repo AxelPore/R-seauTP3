@@ -5,6 +5,7 @@ from os import system, mkdir
 from ipaddress import IPv4Address
 from psutil import net_if_addrs
 from datetime import date, datetime
+import platform
 
 def lookup(domn):
     reg = r"^(?=.{4,255}$)([a-zA-Z0-9][a-zA-Z0-9-]{,61}[a-zA-Z0-9]\.)+[a-zA-Z0-9]{2,5}$"
@@ -28,11 +29,17 @@ def ping(ipa):
     except ValueError:
         return ["[ERROR]", f"{ip} is not a correct IPv4 address"]
         
-def ip():
+def ip(os):
+    if os == "Windows":
+        rcard = "Wi-Fi"
+    elif os == "Linux":
+        rcard = "enp0s8"
+    else:
+        exit
     cidr = 0
     dic = net_if_addrs()
     for key, value in dic.items():
-        if key == "Wi-Fi":
+        if key == rcard:
             addr = str(value[1]).split(", ")[1].split("=")[1].split("'")[1]
             netm = str(value[1]).split(", ")[2].split("=")[1].split("'")[1]
             for i in range(4) :
@@ -43,8 +50,13 @@ def ip():
     nbra = 2**(32-cidr)
     return ["[INFO]", f"{addr}/{cidr} \n{nbra}"]
 
-def Cfolder():
-    source = r"C:\Users\axelp\AppData\Local\Temp"
+def Cfolder(os):
+    if os == "Windows":
+        source = r"C:\Users\axelp\AppData\Local\Temp"
+    elif os == "Linux":
+        source = ""
+    else:
+        exit
     try:
         mkdir(source)
     except FileExistsError:
@@ -82,8 +94,13 @@ def status(r, command):
             z = 3
     return z
     
-def log(r: str, command: str, arg: str, z: int):
-    LOG_FILE = r"C:\Users\axelp\AppData\Local\Temp\network_tp3\network.log"
+def log(r: str, command: str, arg: str, z: int, os):
+    if os == "Windows":
+        LOG_FILE = r"C:\Users\axelp\AppData\Local\Temp\network_tp3\network.log"
+    elif os == "Linux":
+        LOG_FILE = ""
+    else:
+        exit   
     today = date.today()
     now = datetime.now()
     atime = now.strftime("%H:%M:%S")
@@ -99,10 +116,19 @@ def log(r: str, command: str, arg: str, z: int):
     f.write(LOG)
     f.close()
 
-    
+def Osdefine():
+    os = 0
+    if platform.system() == "Windows":
+        os = 1
+    elif platform.system() == "Linux":
+        os = 2
+    else :
+        pass
+    return os
     
 def main(): 
-    Cfolder()
+    os = Osdefine()
+    Cfolder(os)
     p = None
     r = None
     match argv[1]:
@@ -111,7 +137,7 @@ def main():
         case "ping" :
             r, p = ping(argv[2])
         case "ip":
-            r, p = ip()
+            r, p = ip(os)
         case _ :
             p = f"{argv[1]} is not an available command."
             r = "[ERROR]"
@@ -120,6 +146,6 @@ def main():
         t = None
     else :
         t = argv[2]
-    log(r, argv[1], t, z)
+    log(r, argv[1], t, z, os)
     print(p)
 main()
