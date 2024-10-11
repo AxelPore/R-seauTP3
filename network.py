@@ -1,10 +1,10 @@
 from socket import gethostbyname
 from sys import argv
 from re import search
-from os import *
+from os import system, mkdir
 from ipaddress import IPv4Address
 from psutil import net_if_addrs
-from datetime import *
+from datetime import date, datetime
 
 def lookup(domn):
     reg = r"^(?=.{4,255}$)([a-zA-Z0-9][a-zA-Z0-9-]{,61}[a-zA-Z0-9]\.)+[a-zA-Z0-9]{2,5}$"
@@ -44,7 +44,7 @@ def ip():
     return ["[INFO]", f"{addr}/{cidr} \n{nbra}"]
 
 def Cfolder():
-    source = "%appdata%/Local/Temp"
+    source = r"C:\Users\axelp\AppData\Local\Temp"
     try:
         mkdir(source)
     except FileExistsError:
@@ -53,7 +53,7 @@ def Cfolder():
         pass
     except Exception as e:
         pass
-    source += "/network_tp3"
+    source += r"\network_tp3"
     try:
         mkdir(source)
     except FileExistsError:
@@ -82,23 +82,22 @@ def status(r, command):
             z = 3
     return z
     
-def log(r, command, arg, z):
-    LOG_FILE = "%\appdata%/Local/Temp/network_tp3/network.log"
+def log(r: str, command: str, arg: str, z: int):
+    LOG_FILE = r"C:\Users\axelp\AppData\Local\Temp\network_tp3\network.log"
     today = date.today()
     now = datetime.now()
     atime = now.strftime("%H:%M:%S")
     if z == 0:
-        LOG = f"{today} {atime} {r} Command {command} called successfully with argument {arg}."
+        LOG = f"{today} {atime} {r} Command {command} called successfully with argument {arg}. \n"
     if z == 1:
-        LOG = f"{today} {atime} {r} Command {command} called successfully."
+        LOG = f"{today} {atime} {r} Command {command} called successfully. \n"
     if z == 2:
-        LOG = f"{today} {atime} {r} Command {command} called with bad arguments : {arg}."
+        LOG = f"{today} {atime} {r} Command {command} called with bad arguments : {arg}. \n"
     if z == 3:
-        LOG = f"{today} {atime} {r} Invalid command : {command} doesnt exist"
+        LOG = f"{today} {atime} {r} Invalid command : {command} doesnt exist \n"
     f = open(LOG_FILE, "a")
     f.write(LOG)
     f.close()
-    return LOG_FILE
 
     
     
@@ -121,8 +120,6 @@ def main():
         t = None
     else :
         t = argv[2]
-    LOG_FILE = log(r, argv[1], t, z)
+    log(r, argv[1], t, z)
     print(p)
-    f = open(LOG_FILE, "r")
-    print(f.read())
 main()
