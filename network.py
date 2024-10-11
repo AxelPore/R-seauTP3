@@ -115,11 +115,11 @@ def log(r: str, command: str, arg: str, z: int, os):
     atime = now.strftime("%H:%M:%S")
     if z == 0:
         LOG = f"{today} {atime} {r} Command {command} called successfully with argument {arg}. \n"
-    if z == 1:
+    elif z == 1:
         LOG = f"{today} {atime} {r} Command {command} called successfully. \n"
-    if z == 2:
+    elif z == 2:
         LOG = f"{today} {atime} {r} Command {command} called with bad arguments : {arg}. \n"
-    if z == 3:
+    elif z == 3:
         LOG = f"{today} {atime} {r} Invalid command : {command} doesnt exist \n"
     f = open(LOG_FILE, "a")
     f.write(LOG)
