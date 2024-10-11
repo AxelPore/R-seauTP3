@@ -54,7 +54,7 @@ def Cfolder(os):
     if os == "Windows":
         source = r"C:\Users\axelp\AppData\Local\Temp"
     elif os == "Linux":
-        source = ""
+        source = "/tmp"
     else:
         exit
     try:
@@ -98,7 +98,7 @@ def log(r: str, command: str, arg: str, z: int, os):
     if os == "Windows":
         LOG_FILE = r"C:\Users\axelp\AppData\Local\Temp\network_tp3\network.log"
     elif os == "Linux":
-        LOG_FILE = ""
+        LOG_FILE = "/tmp/network_tp3/network.log"
     else:
         exit   
     today = date.today()
