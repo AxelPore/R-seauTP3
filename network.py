@@ -31,9 +31,9 @@ def ping(ipa):
         
 def ip(os):
     rcard = None
-    if os == "Windows":
+    if os == 1:
         rcard = "Wi-Fi"
-    elif os == "Linux":
+    elif os == 2:
         rcard = "enp0s8"
     else:
         exit
@@ -55,9 +55,9 @@ def ip(os):
     return ["[INFO]", f"{addr}/{cidr} \n{nbra}"]
 
 def Cfolder(os):
-    if os == "Windows":
+    if os == 1:
         source = r"C:\Users\axelp\AppData\Local\Temp"
-    elif os == "Linux":
+    elif os == 2:
         source = "/tmp"
     else:
         exit
@@ -69,9 +69,9 @@ def Cfolder(os):
         pass
     except Exception as e:
         pass
-    if os == "Windows":
+    if os == 1:
         source += r"\network_tp3"
-    elif os == "Linux":
+    elif os == 2:
         source = "\network_tp3"
     else:
         exit
@@ -104,9 +104,9 @@ def status(r, command):
     
 def log(r: str, command: str, arg: str, z: int, os):
     LOG_FILE = ""
-    if os == "Windows":
+    if os == 1:
         LOG_FILE = r"C:\Users\axelp\AppData\Local\Temp\network_tp3\network.log"
-    elif os == "Linux":
+    elif os == 2:
         LOG_FILE = "/tmp/network_tp3/network.log"
     else:
         exit   
