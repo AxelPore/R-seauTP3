@@ -30,6 +30,7 @@ def ping(ipa):
         return ["[ERROR]", f"{ip} is not a correct IPv4 address"]
         
 def ip(os):
+    rcard = None
     if os == "Windows":
         rcard = "Wi-Fi"
     elif os == "Linux":
