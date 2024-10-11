@@ -121,7 +121,7 @@ def log(r: str, command: str, arg: str, z: int, os):
         LOG = f"{today} {atime} {r} Command {command} called with bad arguments : {arg}. \n"
     if z == 3:
         LOG = f"{today} {atime} {r} Invalid command : {command} doesnt exist \n"
-    f = open(LOG_FILE, "w")
+    f = open(LOG_FILE, "a")
     f.write(LOG)
     f.close()
 
