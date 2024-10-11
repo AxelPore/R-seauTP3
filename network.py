@@ -59,7 +59,6 @@ def Cfolder(os):
         source = r"C:\Users\axelp\AppData\Local\Temp"
     elif os == 2:
         source = "/tmp"
-        print("Hello connard")
     else:
         exit
     try:
@@ -73,7 +72,7 @@ def Cfolder(os):
     if os == 1:
         source += r"\network_tp3"
     elif os == 2:
-        source = "\network_tp3"
+        source += "/network_tp3"
     else:
         exit
     try:
