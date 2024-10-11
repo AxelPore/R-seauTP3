@@ -1,4 +1,4 @@
-from socket import gethostbyname
+from socket import gethostbyname, AddressFamily
 from sys import argv
 from re import search
 from os import system, mkdir
@@ -38,15 +38,18 @@ def ip(os):
         exit
     cidr = 0
     dic = net_if_addrs()
+    addr, netm = None, None
     for key, value in dic.items():
         if key == rcard:
-            addr = str(value[1]).split(", ")[1].split("=")[1].split("'")[1]
-            netm = str(value[1]).split(", ")[2].split("=")[1].split("'")[1]
-            for i in range(4) :
-                x = bin(int(netm.split(".")[i])).split("b")[1]
-                for j in x :
-                    if j == "1" :
-                        cidr += 1
+            for i in range(len(value)):
+                if value[i].family == AddressFamily.AF_INET:
+                    addr = value[i].address
+                    netm = value[i].netmask                
+                    for i in range(4) :
+                        x = bin(int(netm.split(".")[i])).split("b")[1]
+                        for j in x :
+                            if j == "1" :
+                                cidr += 1
     nbra = 2**(32-cidr)
     return ["[INFO]", f"{addr}/{cidr} \n{nbra}"]
 
@@ -77,21 +80,20 @@ def Cfolder(os):
     
 def status(r, command):
     z = None
-    match command:
-        case "lookup":
-            if r == "[ERROR]":
-                z = 2
-            else :
-                z = 0
-        case "ping" :
-            if r == "[ERROR]":
-                z = 2
-            else :
-                z = 0
-        case "ip":
-            z = 1
-        case _ :
-            z = 3
+    if command == "lookup":
+        if r == "[ERROR]":
+            z = 2
+        else :
+            z = 0
+    elif command == "ping" :
+        if r == "[ERROR]":
+            z = 2
+        else :
+            z = 0
+    elif command == "ip":
+        z = 1
+    else :
+        z = 3
     return z
     
 def log(r: str, command: str, arg: str, z: int, os):
@@ -131,16 +133,15 @@ def main():
     Cfolder(os)
     p = None
     r = None
-    match argv[1]:
-        case "lookup":
-            r, p = lookup(argv[2])
-        case "ping" :
-            r, p = ping(argv[2])
-        case "ip":
-            r, p = ip(os)
-        case _ :
-            p = f"{argv[1]} is not an available command."
-            r = "[ERROR]"
+    if argv[1] == "lookup":
+        r, p = lookup(argv[2])
+    elif argv[1] == "ping" :
+        r, p = ping(argv[2])
+    elif argv[1] == "ip":
+        r, p = ip(os)
+    else :
+        p = f"{argv[1]} is not an available command."
+        r = "[ERROR]"
     z = status(r, argv[1])
     if len(argv) == 2:
         t = None
