@@ -103,6 +103,7 @@ def status(r, command):
     return z
     
 def log(r: str, command: str, arg: str, z: int, os):
+    LOG_FILE = None
     if os == "Windows":
         LOG_FILE = r"C:\Users\axelp\AppData\Local\Temp\network_tp3\network.log"
     elif os == "Linux":
