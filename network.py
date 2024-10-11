@@ -55,11 +55,11 @@ def ip(os):
     return ["[INFO]", f"{addr}/{cidr} \n{nbra}"]
 
 def Cfolder(os):
-    print("Hello connard")
     if os == 1:
         source = r"C:\Users\axelp\AppData\Local\Temp"
     elif os == 2:
         source = "/tmp"
+        print("Hello connard")
     else:
         exit
     try:
