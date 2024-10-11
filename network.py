@@ -68,7 +68,12 @@ def Cfolder(os):
         pass
     except Exception as e:
         pass
-    source += r"\network_tp3"
+    if os == "Windows":
+        source += r"\network_tp3"
+    elif os == "Linux":
+        source = "\network_tp3"
+    else:
+        exit
     try:
         mkdir(source)
     except FileExistsError:
